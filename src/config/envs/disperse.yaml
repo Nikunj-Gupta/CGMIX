@@ -15,3 +15,4 @@ t_max: 2005000
 test_interval: 10000
 test_nepisode: 300
 test_greedy: True
+local_results_dir: 'result/result.disperse/'
