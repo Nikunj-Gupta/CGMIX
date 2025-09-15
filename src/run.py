@@ -25,6 +25,7 @@ from runners import REGISTRY as r_REGISTRY
 from controllers import REGISTRY as mac_REGISTRY
 from components.episode_buffer import ReplayBuffer
 from components.transforms import OneHot
+import setproctitle 
 
 
 def run(_run, _config, _log):
@@ -47,6 +48,23 @@ def run(_run, _config, _log):
     # configure tensorboard logger
     unique_token = "{}__{}".format(args.name, datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S"))
     #unique_token = _config['checkpoint_path'].split('/')[-2]
+    unique_token = "{}/{}__{}__{}__{}".format(args.env, args.env, args.name, args.agent, "seed_"+str(args.seed)) 
+    if args.env == "sc2wrapped": 
+        unique_token = "StarCraft2/{}".format("--".join([
+            args.env_args["map_name"], 
+            args.name, 
+            args.agent, 
+            str(args.env_args["capability_config"]["n_units"])+"v"+str(args.env_args["capability_config"]["n_enemies"]), 
+            "seed_"+str(args.seed)
+        ]))
+    elif args.env == "sc2": 
+        unique_token = "StarCraft2/{}".format("--".join([
+            args.env_args["map_name"], 
+            args.name, 
+            args.agent, 
+            "seed_"+str(args.seed)
+        ]))
+    setproctitle.setproctitle(unique_token)
     args.unique_token = unique_token
 
     args.local_results_path = os.path.join(args.local_results_dir, args.local_results_path)
