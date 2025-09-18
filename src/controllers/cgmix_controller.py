@@ -113,7 +113,7 @@ class CgmixMAC(BasicMAC):
         #output = output.view(*(list(output.shape[:-1]) + [n, n]))
         
         # The output of the backward messages must be transposed
-        output[1] = output[1].transpose(dim0=-2, dim1=-1)
+        output[1] = output[1].transpose(dim0=-2, dim1=-1).clone()
         # Compute the symmetric average of each edge with it's flipped counterpart
         return output.mean(dim=0)
 
